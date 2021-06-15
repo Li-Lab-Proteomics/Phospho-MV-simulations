@@ -2,7 +2,7 @@
 Evaluation of differential abundance analysis strategies for phosphoproteomics data with missing values
 
 ## Requirements
-### R (4.0+)
+### R (3.6+)
 * invgamma
 * Bioconductor
 * limma
@@ -11,6 +11,7 @@ Evaluation of differential abundance analysis strategies for phosphoproteomics d
 * trust
 * ggplot2
 * gridExtra
+* data.table
 
 ### Python (3.7+)
 * NumPy (1.19.2+)
