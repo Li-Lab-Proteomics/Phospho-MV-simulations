@@ -33,5 +33,5 @@ The codes of summarizing adjusted _p_-values of different methods are in results
 
 The codes of plotting figures are in results_plot.R
 
-Only the results data for generating the figures are in this repository due to the limit of file size.
+Only the results data for generating the figures is in this repository due to the limit of file size.
 The results data of all methods under all scenarios in the 500-round simulation is available upon request.
