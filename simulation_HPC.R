@@ -17,19 +17,20 @@ library(pcaMethods)
 if(!require('trust')) install.packages('trust', repos="https://cloud.r-project.org/")
 library(trust)
 
-setwd('/lustre/home/acct-clslj/clslj-1/R')
-# No. round
-nround=500
-cd='/lustre/home/acct-clslj/clslj-1/QiaoGuanghua'
+setwd('../Phospho-MV-simulations-main')
+cd=getwd()
+simple_implement=TRUE
+# number of simulation rounds
+nround=ifelse(simple_implement,5,500)
 
 # modified SDA
 ## mod_SDA is a modified version of 'SDA' implemented in the package 'SDAMS'. ##
-source(paste(cd,'/R/mod_SDA/SDA_control.R',sep=''))
-source(paste(cd,'/R/mod_SDA/data_clean.R',sep=''))
-source(paste(cd,'/R/mod_SDA/SDA.R',sep=''))
-source(paste(cd,'/R/mod_SDA/result_summary.R',sep=''))
+source(paste(cd,'/mod_SDA/SDA_control.R',sep=''))
+source(paste(cd,'/mod_SDA/data_clean.R',sep=''))
+source(paste(cd,'/mod_SDA/SDA.R',sep=''))
+source(paste(cd,'/mod_SDA/result_summary.R',sep=''))
 # Mean-Based 2 Group Comparison without Covariate Adjustment
-source(paste(cd,'/R/ZI_DM_tests.R',sep=''))
+source(paste(cd,'/ZI_DM_tests.R',sep=''))
 
 ######  functions  ######
 
@@ -320,8 +321,12 @@ zero.ratio <- c(0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 mnar.ratio = seq(0,1,0.1)
 fclist <- c(1.2, 1.5, 1.8, 2.0, 3.0, 5.0, 10)
 proportion=.5
+if (simple_implement==True){
+  sample.size = c(5,10)
+}
 
 # simulation framework designed for MNAR - site level
+dir.create(paste(cd, "/simu_results", sep=""))
 for (round in 1:nround){
   dir.create(paste(cd, "/simu_results/round", round, sep=""))
   # set seed
