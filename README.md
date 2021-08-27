@@ -22,7 +22,7 @@ We evaluated different testing strategies (i.e. ignoring missing values, imputat
 * SciPy (1.5.2+)
 
 ## Simulation
-The codes of simulation study are in simulation_HPC.R
+The codes of simulation study are in **simulation_HPC.R**
 
 The whole simulation work is very computationally intensive in R, so a simple implementation can be carried out by setting 'simple_implement=TRUE'.
 
@@ -31,9 +31,9 @@ Note:
 2. bPCA imputation was modified by lower the _tol_ parameter in _solve_ function to prevent the error of computationally singular. 
 
 ## Results & Plotting
-The codes of summarizing adjusted _p_-values of different methods are in results_HPC.py
+The codes of summarizing adjusted _p_-values of different methods are in **results_HPC.py**, evaluation of results of all simulation rounds are summarized into one result file.
 
-The codes of plotting figures are in results_plot.R
+The codes of plotting figures are in **results_plot.R**
 
 Only the results data for generating the figures is in this repository due to the limit of file size.
 The results data of all methods under all scenarios in the 500-round simulation is available upon request. 
