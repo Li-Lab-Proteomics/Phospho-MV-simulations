@@ -24,6 +24,8 @@ We evaluated different testing strategies (i.e. ignoring missing values, imputat
 ## Simulation
 The codes of simulation study are in simulation_HPC.R
 
+The whole simulation work is very computationally intensive in R, so a simple implementation can be carried out by setting 'simple_implement=TRUE'.
+
 Note:
 1. The method of SDA was modified by cancelling the data-cleaning step of removing features with low numbers of non-zeros.
 2. bPCA imputation was modified by lower the _tol_ parameter in _solve_ function to prevent the error of computationally singular. 
