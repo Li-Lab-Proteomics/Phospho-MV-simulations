@@ -6,7 +6,7 @@ simple_implement=True
 Nround=5 if simple_implement else 500
 CD='../Phospho-MV-simulations-main'
 sample_size=[5,10] if simple_implement==True else [5,10,30,50,80,100]
-fclist=[1.2, 1.5, 1.8, 2, 3, 5, 10]
+fclist=[1.5, 2] if simple_implement==True else [1.2, 1.5, 1.8, 2, 3, 5, 10]
 zero_ratio=[0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 mnar_ratio=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 FDR=0.05

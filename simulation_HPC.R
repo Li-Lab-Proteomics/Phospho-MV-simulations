@@ -323,6 +323,7 @@ fclist <- c(1.2, 1.5, 1.8, 2.0, 3.0, 5.0, 10)
 proportion=.5
 if (simple_implement==TRUE){
   sample.size = c(5,10)
+  fclist <- c(1.5, 2.0)
 }
 
 # simulation framework designed for MNAR - site level
