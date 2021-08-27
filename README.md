@@ -31,7 +31,7 @@ Note:
 2. bPCA imputation was modified by lower the _tol_ parameter in _solve_ function to prevent the error of computationally singular. 
 
 ## Results & Plotting
-The codes of summarizing adjusted _p_-values of different methods are in **results_HPC.py**, evaluation of results of all simulation rounds are summarized into one result file.
+The codes of summarizing the results (adjusted _p_-values）and evaluating the different methods for the 500-round simulation are in **results_HPC.py**
 
 The codes of plotting figures are in **results_plot.R**
 
