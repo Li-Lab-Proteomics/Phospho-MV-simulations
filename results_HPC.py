@@ -11,7 +11,7 @@ zero_ratio=[0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 mnar_ratio=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 FDR=0.05
 
-
+## The two functions are modified from the ones of: https://github.com/hmsch/proteomics-simulations ##
 def roc_prc_scores(is_changed, p_vals):
     """
     Calculates AUROC, AUPRC, and standardized pAUROC scores
@@ -56,9 +56,10 @@ def roc_prc_scores(is_changed, p_vals):
 
 def power_analysis(is_changed, pvals, alpha=0.05):
     """
+    Calculate Precision and Recall under a fixed pvalue threshold
     :param is_changed: actual labels (vector of ones and zeros, n x 1)
     :param p_vals:     predicted labels (list of vectors of non-negative pvalues, smaller more significant, n x k)
-    :param alpha:      FWER, family-wise error rate, 0.05 by default in multipletests
+    :param alpha:      pvalue threshold, 0.05 by default
     """
     fps = []
     tps = []
