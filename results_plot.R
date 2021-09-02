@@ -7,8 +7,12 @@ library(ggplot2)
 library(gridExtra)
 library(data.table)
 
+# to draw figures from processed data
 draw_from_figdata=TRUE
+# thus setting simple_implement=FALSE
 simple_implement=!draw_from_figdata
+# or draw figures from simple_implement simulation by setting the opposite
+
 setwd('../Phospho-MV-simulations-main')
 cd=getwd()
 
