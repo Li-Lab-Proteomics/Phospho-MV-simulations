@@ -246,7 +246,7 @@ resplot3<-function(dataset,type='pAUROC',samplesize=5,zeroratio=.3){
     coord_fixed(ratio = 1)+
     theme(axis.text = element_text(size = 15,family = "ARL"))+
     #theme(plot.margin = unit(c(0.1,0,0,0),unit ="mm" ))+
-    labs(x="Fold Change",y="MNAR Ratio",title=paste0('N=',samplesize,', Zero%=',zeroratio),family="ARL")+
+    labs(x="Fold Change",y="MNAR Ratio",title=paste0('N=',samplesize,', Missing%=',zeroratio),family="ARL")+
     theme(axis.title = element_text(size = 18))+
     theme(plot.title = element_text(size = 18,hjust = 0.5,family = "ARL",face = 'bold'))+
     theme(legend.key.width = unit(6,'mm'),legend.key.height = unit(5,'mm'))+
