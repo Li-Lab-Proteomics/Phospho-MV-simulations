@@ -43,7 +43,7 @@ if (simple_implement==FALSE){
     result=rbind(result1,result2,result3,result4,result5,result6)
     result.auc=result
 }}else{
-  result.auc=read.table(paste0(cd,'Simu_results.txt'),sep='\t',header=T)
+  result.auc=read.table(paste0(cd,'/Simu_results.txt'),sep='\t',header=T)
 }
 
 
@@ -188,8 +188,8 @@ write.table(result.mean.best2,"D:/datasets/simu_/Simu_results_mean_best2.txt", q
 
 }else{
   # if draw_from_figdata==TRUE
-  result.mean.all2=read.table(paste0(cd,'simulation_results/Simu_results_mean2.txt'),sep='\t',header=T)
-  result.mean.best2=read.table(paste0(cd,'simulation_results/Simu_results_mean_best2.txt'),sep='\t',header=T)
+  result.mean.all2=read.table(paste0(cd,'/simulation_results/Simu_results_mean2.txt'),sep='\t',header=T)
+  result.mean.best2=read.table(paste0(cd,'/simulation_results/Simu_results_mean_best2.txt'),sep='\t',header=T)
 }
 
 
@@ -238,7 +238,7 @@ result.bb$model <- factor(fac2, levels=levels(fac2)[order_lab2])
 
 ## 42 scenarios
 # Figure S2-S7
-setwd(paste0(cd,'pAUROC_best_methods'))
+setwd(paste0(cd,'/pAUROC_best_methods'))
 for (n in c(5,10,30,50,80,100)){
   for (ZR in c(.3,.4,.5,.6,.7,.8,.9)){
     tmp=result.mean.best2[(result.mean.best2$Nsample==n)&(result.mean.best2$zr==ZR),]
@@ -253,7 +253,7 @@ for (n in c(5,10,30,50,80,100)){
 
 ## 6 charts (best across MNAR) 
 # Figure 5
-setwd(paste0(cd,'pAUROC_best_across'))
+setwd(paste0(cd,'/pAUROC_best_across'))
 for (n in c(5,10,30,50,80,100)){
   tmp=result.bb[(result.bb$Nsample==n),]
   temp=tmp[,c(2:5)]
