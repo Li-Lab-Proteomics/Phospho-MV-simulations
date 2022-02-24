@@ -93,8 +93,8 @@ def power_analysis(is_changed, pvals, alpha=0.05):
     return fps, tps, Precision, Recall
 
 
-Nmodel=17
-method_name=['T-test','T-SampMin','T-bPCA','Wilcoxon','Wilcoxon-SampMin','Wilcoxon-bPCA','ModT','ModT-SampMin','ModT-bPCA','twoT','twoWilcox','SDA_robust','SDA','ZIG_2p','ZILN_2p','ZIG_DM','ZILN_DM']
+Nmodel=19
+method_name=['T-test','T-SampMin','T-bPCA','Wilcoxon','Wilcoxon-SampMin','Wilcoxon-bPCA','ModT','ModT-SampMin','ModT-bPCA','twoT','twoWilcox','SDA_robust','SDA','ZIG_2p','ZILN_2p','ZIG_DM','ZILN_DM','MSstatsPTM','MSstatsPTM-AFT']
 result_all=pd.DataFrame()
 for nsample in sample_size:
     for fc in fclist:
@@ -102,7 +102,7 @@ for nsample in sample_size:
             for mnar in mnar_ratio:
                 for r in range(Nround):
                     r=r+1
-                    # 17 different models
+                    # 19 different models
                     result_txt=CD+'/simu_results/round'+str(r)+'/Simu_'+str(nsample)+'_'+str(fc)+'_'+str(zr)+'_'+str(mnar)+'_for_'+str(r)+'_times.txt'
                     data=np.genfromtxt(result_txt,delimiter='\t',skip_header=1)
                     actual=data[:,data.shape[1]-1]
