@@ -59,11 +59,11 @@ fac=function(result,ol=order_lab){
 }
 
 if (draw_from_figdata==TRUE){
-  result_fig2=read.table(paste0(cd,"simulation_results/data_fig2.txt"),sep='\t',header=T)
-  result_fig3=read.table(paste0(cd,"simulation_results/data_fig3.txt"),sep='\t',header=T)
-  result_fig4=read.table(paste0(cd,"simulation_results/data_fig4.txt"),sep='\t',header=T)
-  result_fig6=read.table(paste0(cd,"simulation_results/data_fig6.txt"),sep='\t',header=T)
-  result_figs8=read.table(paste0(cd,"simulation_results/data_fig s8.txt"),sep='\t',header=T)
+  result_fig2=read.table(paste0(cd,"simulation_results/data_fig_2.txt"),sep='\t',header=T)
+  result_fig3=read.table(paste0(cd,"simulation_results/data_fig_3.txt"),sep='\t',header=T)
+  result_fig4=read.table(paste0(cd,"simulation_results/data_fig_4.txt"),sep='\t',header=T)
+  result_fig6=read.table(paste0(cd,"simulation_results/data_fig_6.txt"),sep='\t',header=T)
+  result_figs8=read.table(paste0(cd,"simulation_results/data_fig_s9.txt"),sep='\t',header=T)
   result_fig2=fac(result_fig2)
   result_fig3=fac(result_fig3)
   result_fig4=fac(result_fig4)
