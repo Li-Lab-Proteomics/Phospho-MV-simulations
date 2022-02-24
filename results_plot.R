@@ -179,8 +179,8 @@ write.table(result.mean.best2,"D:/datasets/simu_/Simu_results_mean_best2.txt", q
 
 }else{
   # if draw_from_figdata==TRUE
-  result.mean.all2=read.table(paste0(cd,'/simulation_results/Simu_results_MSstatsPTM_mean_all.txt'),sep='\t',header=T)
-  result.mean.best3=read.table(paste0(cd,'/simulation_results/Simu_results_mean_best3.txt'),sep='\t',header=T)
+  result.mean.all2=read.table(paste0(cd,'/simulation_results/Simu_results_MS_mean_all.txt'),sep='\t',header=T)
+  result.mean.best3=read.table(paste0(cd,'/simulation_results/Simu_results_MS_mean_best.txt'),sep='\t',header=T)
 }
 
 
