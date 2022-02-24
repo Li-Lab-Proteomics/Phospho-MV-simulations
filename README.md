@@ -1,7 +1,7 @@
 # Phospho-MV-simulations
 Evaluation of differential abundance analysis strategies for phosphoproteomics data with missing values.
 
-We evaluated different testing strategies (i.e. ignoring missing values, imputation, compound hypothesis tests) under 3,234 data scenarios of various levels of sample size, fold change, missing ratio and MNAR ratio. Each scenario was simulated for 500 rounds and a total of 16 methods were compared.
+We evaluated different testing strategies (i.e. ignoring missing values, imputation, compound hypothesis tests) under 3,234 data scenarios of various levels of sample size, fold change, missing ratio and MNAR ratio. Each scenario was simulated for 500 rounds and a total of 18 methods were compared.
 
 ## Requirements
 ### R (3.6+)
