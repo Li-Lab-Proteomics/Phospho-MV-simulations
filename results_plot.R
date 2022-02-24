@@ -51,7 +51,7 @@ if (simple_implement==FALSE){
 source('../results_plot_functions.R')
 
 ## change the order of labels in box-plots
-order_lab=as.factor(c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','SDA_robust','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p'))
+order_lab=as.factor(c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','SDA_robust','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p','MSstatsPTM','MSstatsPTM-AFT'))
 fac=function(result,ol=order_lab){
   f <- as.factor(result$model)
   result$model <- factor(f, levels=levels(f)[ol])
@@ -69,7 +69,7 @@ if (draw_from_figdata==TRUE){
   result_fig4=fac(result_fig4)
   #result_fig6=fac(result_fig6)
   f <- as.factor(result_fig6$model)
-  ol=as.factor(c('T-test','Wilcoxon','Wilcoxon-SampMin','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZIG_2p','ZILN_2p'))
+  ol=as.factor(c('T-test','Wilcoxon','Wilcoxon-SampMin','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZIG_2p','ZILN_2p','MSstatsPTM','MSstatsPTM-AFT'))
   result_fig6$model <- factor(f, levels=levels(f)[ol])
   
   f <- as.factor(result_figs8$model)
@@ -79,71 +79,62 @@ if (draw_from_figdata==TRUE){
 }
 
 ## 1.imputation or not
-mlist=c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin')
+mlist=c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','MSstatsPTM','MSstatsPTM-AFT')
 
 if (draw_from_figdata){result.auc=result_fig2}
 plotbox(data=result.auc, n=10, zr=.3, mnar=NULL, fc=2, evaluation='pAUROC',modellist=mlist)
-ggsave("fig2a.png", width = 15, height = 6, dpi=600)
+ggsave("fig2a_revised.png", width = 9, height = 5, dpi=600)
 if (simple_implement==FALSE){
   # because the sample size of 30 not in simple_implement simulation; the following is the same
 plotbox(data=result.auc, n=30, zr=.3, mnar=NULL, fc=2, evaluation='pAUROC',modellist=mlist)
-ggsave("fig2b.png", width = 15, height = 6, dpi=600)
+ggsave("fig2b_revised.png", width = 9, height = 5, dpi=600)
 }
+# Fig2: v2
+plotbox2(data=result.auc, n=c(10,30), zr=.3, fc=2, evaluation='pAUROC',modellist=mlist,No.fig='fig2',textsizeL = 15)
+ggsave("fig2_revised.png", width = 6, height = 5, dpi=600)
 
 # 1.2
 if (draw_from_figdata){result.auc=result_fig3}
-plotbox(data=result.auc, n=NULL, zr=.3, mnar=0, fc=1.5, evaluation='pAUROC',modellist=mlist,textsizeM = 19,textsizeL = 22)
-ggsave("fig3a.png", width = 10, height = 6, dpi=600)
-plotbox(data=result.auc, n=NULL, zr=.6, mnar=0, fc=1.5, evaluation='pAUROC',modellist=mlist,textsizeM = 19,textsizeL = 22)
-ggsave("fig3b.png", width = 10, height = 6, dpi=600)
-# 1.3
-plotbox(data=result.auc, n=10, zr=NULL, mnar=0, fc=2, evaluation='pAUROC',modellist=mlist,textsizeM = 19,textsizeL = 22)
-ggsave("fig3c.png", width = 11, height = 6, dpi=600)
-if (simple_implement==FALSE){
-plotbox(data=result.auc, n=30, zr=NULL, mnar=0, fc=2, evaluation='pAUROC',modellist=mlist,textsizeM = 19,textsizeL = 22)
-ggsave("fig3d.png", width = 11, height = 6, dpi=600)
-}
+# Fig3: v2
+plotbox2(data=result.auc, n=c(5,10,30,50,80,100), zr=c(.3,.6), mnar=0, fc=1.5, evaluation='pAUROC',modellist=mlist,No.fig='fig3ab',textsizeL = 15)
+ggsave("fig3ab_revised.png", width = 6, height = 5, dpi=600)
+plotbox2(data=result.auc, n=c(10,30), zr=c(.3,.4,.5,.6,.7,.8), mnar=0, fc=2, evaluation='pAUROC',modellist=mlist,No.fig='fig3cd',textsizeL = 15)
+ggsave("fig3cd_revised.png", width = 6, height = 5, dpi=600)
 
 
 ## 2. Zero-Inflated models  vs  Non-Impute
-mlist=c('T-test','Wilcoxon','ModT','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p')
+mlist=c('T-test','Wilcoxon','ModT','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p','MSstatsPTM')
 if (draw_from_figdata){result.auc=result_fig4}
 
 if (simple_implement==FALSE){
 plotbox(data=result.auc, n=30, zr=.7, mnar=NULL, fc=2, evaluation='pAUROC',modellist=mlist)
-ggsave("fig4.png", width = 15, height = 6, dpi=600)
+ggsave("fig4_legend.png", width = 9, height = 5, dpi=600)
 }
+# Fig4: v2
+plotbox2(data=result.auc, n=30, zr=.7, fc=2, evaluation='pAUROC',modellist=mlist,No.fig='fig4',textsizeL = 15)
+ggsave("fig4_revised.png", width = 6, height = 3, dpi=600)
 
 
-## 3. ZI-models (5)  vs  Non-Impute (3) + Impute (2) --- Finals
-mlist=c('T-test','Wilcoxon','Wilcoxon-SampMin','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZIG_2p','ZILN_2p')
+## 3. ZI-models (5)  vs  Non-Impute (4) + Impute (3) --- Finals
+mlist=c('T-test','Wilcoxon','Wilcoxon-SampMin','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZIG_2p','ZILN_2p','MSstatsPTM','MSstatsPTM-AFT')
 if (draw_from_figdata){result.auc=result_fig6}
-
-#3.1 ModT-bPCA
-plotbox(data=result.auc, n=5, zr=.3, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist,ylimit = .75)
-ggsave("fig6a.png", width = 15, height = 6, dpi=600)
-
-#3.2 ModT
-if (simple_implement==FALSE){
-plotbox(data=result.auc, n=50, zr=.9, mnar=NULL, fc=2, evaluation='pAUROC',modellist=mlist)
-ggsave("fig6b.png", width = 15, height = 6, dpi=600)
-
-#plotbox(data=result.auc, n=10, zr=.6, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist)
-
-#3.3 two-part T
-plotbox(data=result.auc, n=80, zr=.7, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist)
-ggsave("fig6c.png", width = 15, height = 6, dpi=600)
+# 3.1 ModT-bPCA; 3.2 ModT; 3.3 two-part T
+# Fig6: v2
+plotbox2(data=result.auc, n=NULL, zr=NULL, fc=NULL, evaluation='pAUROC',modellist=mlist,No.fig='fig6',textsizeL = 15)
+ggsave("fig6_revised.png", width = 6, height = 8, dpi=600)
+plotbox2(data=result.auc, n=NULL, zr=NULL, fc=NULL, evaluation='pAUROC',modellist=mlist,No.fig='fig6',textsizeL = 15,ylimit = .75)
+ggsave("fig6_.75.png", width = 6, height = 8, dpi=600)
 
 
-# Figure S8
+# Figure S9
 if (draw_from_figdata){result.auc=result_figs8}
 plotbox(data=result.auc, n=10, zr=.7, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist)
-ggsave("figs8a.png", width = 15, height = 6, dpi=600)
-}
-plotbox(data=result.auc, n=10, zr=.6, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist)
-ggsave("figs8b.png", width = 15, height = 6, dpi=600)
-plotbox(data=result.auc, n=10, zr=.3, mnar=NULL, fc=1.5, evaluation='pAUROC',modellist=mlist)
-ggsave("figs8c.png", width = 15, height = 6, dpi=600)
+ggsave("figs9a_legend.png", width = 9, height = 6, dpi=600)
+
+plotbox2(data=result.auc, n=10, zr=c(0.7,0.6,0.3), fc=1.5, evaluation='pAUROC',modellist=mlist,No.fig='figsi',textsizeL = 15)
+ggsave("figs9.png", width = 6, height = 8, dpi=600)
+plotbox2(data=result.auc, n=10, zr=c(0.7,0.6,0.3), fc=1.5, evaluation='pAUROC',modellist=mlist,No.fig='figsi',textsizeL = 15,ylimit = .75)
+ggsave("figs9_.75.png", width = 6, height = 8, dpi=600)
 
 # verified for simple_implement==F;draw_from_figdata==T
 # verified for simple_implement==T;draw_from_figdata==F
@@ -189,7 +180,7 @@ write.table(result.mean.best2,"D:/datasets/simu_/Simu_results_mean_best2.txt", q
 }else{
   # if draw_from_figdata==TRUE
   result.mean.all2=read.table(paste0(cd,'/simulation_results/Simu_results_mean2.txt'),sep='\t',header=T)
-  result.mean.best2=read.table(paste0(cd,'/simulation_results/Simu_results_mean_best2.txt'),sep='\t',header=T)
+  result.mean.best3=read.table(paste0(cd,'/simulation_results/Simu_results_mean_best3.txt'),sep='\t',header=T)
 }
 
 
@@ -205,47 +196,46 @@ result.bb=best_best(result.mm)
 #colorpalette=c("#DB2F20","#9F2218",'#EE3768',"#E68200","#E6B600","#E6EB00","#A5CF47","#00B159","#1F868F",'#4eb7d9',"#3E5CC5","#7149D7","#AF5CE2","#B981DB","#CCCCCC","#8C8C8C")
 #image(x=1:16,y=1,z=as.matrix(1:16),col=colorRampPalette(colorpalette)(16))
 
+## change the order of legends !!! important
+order_lab=as.factor(c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p','MSstatsPTM')) #,'MSstatsPTM-AFT'))
+fac <- as.factor(result.mean.best3$model)
+result.mean.best3$model <- factor(fac, levels=levels(fac)[order_lab])
+
+order_lab2=as.factor(c('T-test','T-bPCA','Wilcoxon','Wilcoxon-bPCA','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZILN_2p','MSstatsPTM'))
+fac2 <- as.factor(result.bb$model)
+result.bb$model <- factor(fac2, levels=levels(fac2)[order_lab2])
+
 ## get all legends
-tmp=result.mean.best2[(result.mean.best2$Nsample==50)&(result.mean.best2$zr==.4),]
+tmp=result.mean.best3[(result.mean.best3$Nsample==50)&(result.mean.best3$zr==.4),]
 test=tmp
-test$model[1:16]=c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p')
+test$model[1:17]=c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p','MSstatsPTM')
 test=test[,c(2,4,5,6)]
 test$fc=as.factor(test$fc)
 test$MNAR=as.factor(test$MNAR)
-levels(test$model)=c('T-test','T-bPCA','T-SM','Wilcox','W-bPCA','W-SM','ModT','ModT-bPCA','ModT-SM','2part-T','2part-W','SDA','ZIG_DM','ZILN_DM','ZIG_2part','ZILN_2part')
+levels(test$model)=c('T-test','T-bPCA','T-SM','Wilcox','W-bPCA','W-SM','ModT','ModT-bPCA','ModT-SM','2part-T','2part-W','SDA','ZIG_DM','ZILN_DM','ZIG_2part','ZILN_2part','MSstatsPTM')
 colnames(test)=c('Var2',"Var1",'method','value')
 resplot3(test,samplesize=0,zeroratio=0)
 
 ## get 10 legends
 test=result.bb[(result.bb$Nsample==30),]
-test$model[1:2]=c('T-bPCA','Wilcoxon-bPCA')
+test$model[1:3]=c('T-bPCA','Wilcoxon-bPCA','Wilcoxon')
 test=test[,c(2:5)]
 test$fc=as.factor(test$fc)
 test$zr=as.factor(test$zr)
-levels(test$model)=c('T-test','T-bPCA','Wilcox','W-bPCA','ModT','ModT-bPCA','2part-T','2part-W','SDA','ZILN_2part')
+levels(test$model)=c('T-test','T-bPCA','Wilcox','W-bPCA','ModT','ModT-bPCA','2part-T','2part-W','SDA','ZILN_2part','MSstatsPTM')
 colnames(test)=c('Var2',"Var1",'method','value')
 resplot3b(test,samplesize=0)
 
-
-## change the order of legends !!! important
-order_lab=as.factor(c('T-test','T-bPCA','T-SampMin','Wilcoxon','Wilcoxon-bPCA','Wilcoxon-SampMin','ModT','ModT-bPCA','ModT-SampMin','twoT','twoWilcox','SDA','ZIG_DM','ZILN_DM','ZIG_2p','ZILN_2p'))
-fac <- as.factor(result.mean.best2$model)
-result.mean.best2$model <- factor(fac, levels=levels(fac)[order_lab])
-
-order_lab2=as.factor(c('T-test','T-bPCA','Wilcoxon','Wilcoxon-bPCA','ModT','ModT-bPCA','twoT','twoWilcox','SDA','ZILN_2p'))
-fac2 <- as.factor(result.bb$model)
-result.bb$model <- factor(fac2, levels=levels(fac2)[order_lab2])
-
 ## 42 scenarios
-# Figure S2-S7
+# Figure S3-S8
 setwd(paste0(cd,'/pAUROC_best_methods'))
 for (n in c(5,10,30,50,80,100)){
   for (ZR in c(.3,.4,.5,.6,.7,.8,.9)){
-    tmp=result.mean.best2[(result.mean.best2$Nsample==n)&(result.mean.best2$zr==ZR),]
+    tmp=result.mean.best3[(result.mean.best3$Nsample==n)&(result.mean.best3$zr==ZR),]
     temp=tmp[,c(2,4,5,6)]
     temp$fc=as.factor(temp$fc)
     temp$MNAR=as.factor(temp$MNAR)
-    levels(temp$model)=c('T-test','T-bPCA','T-SM','Wilcox','W-bPCA','W-SM','ModT','ModT-bPCA','ModT-SM','2part-T','2part-W','SDA','ZIG_DM','ZILN_DM','ZIG_2part','ZILN_2part')
+    levels(temp$model)=c('T-test','T-bPCA','T-SM','Wilcox','W-bPCA','W-SM','ModT','ModT-bPCA','ModT-SM','2part-T','2part-W','SDA','ZIG_DM','ZILN_DM','ZIG_2part','ZILN_2part','MSstatsPTM')
     colnames(temp)=c('Var2',"Var1",'method','value')
     resplot3(temp,samplesize=n,zeroratio=ZR)
   }
@@ -259,8 +249,27 @@ for (n in c(5,10,30,50,80,100)){
   temp=tmp[,c(2:5)]
   temp$fc=as.factor(temp$fc)
   temp$zr=as.factor(temp$zr)
-  levels(temp$model)=c('T-test','T-bPCA','Wilcox','W-bPCA','ModT','ModT-bPCA','2part-T','2part-W','SDA','ZILN_2part')
+  levels(temp$model)=c('T-test','T-bPCA','Wilcox','W-bPCA','ModT','ModT-bPCA','2part-T','2part-W','SDA','ZILN_2part','MSstatsPTM')
   colnames(temp)=c('Var2',"Var1",'method','value')
   resplot3b(temp,samplesize=n)
 }
+
+####### quantify the decrease in pAUC by AFT ######
+aft=result.mean.all3[(result.mean.all3$model %in% c('MSstatsPTM','MSstatsPTM-AFT'))&(result.mean.all3$MNAR<1),]
+# if consider mnar==1, sometimes AFT improve by 70%
+aft2=c()
+for (n in c(5,10,30,50,80,100)){
+  for (zr in c(.3,.4,.5,.6,.7,.8,.9)){
+    for (fc in c(1.2,1.5,1.8,2,3,5,10)) {
+      for (mnar in c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9)){
+        tmp1=aft[(aft$Nsample==n)&(aft$zr==zr)&(aft$fc==fc)&(aft$MNAR==mnar)&(aft$model=='MSstatsPTM'),]
+        tmp2=aft[(aft$Nsample==n)&(aft$zr==zr)&(aft$fc==fc)&(aft$MNAR==mnar)&(aft$model=='MSstatsPTM-AFT'),]
+        aft2=c(aft2,(tmp1$pAUROC-tmp2$pAUROC)/tmp1$pAUROC)
+      }
+    }
+  }
+}
+max(aft2)
+summary(aft2)
+sum(aft2<0)/length(aft2)
 
