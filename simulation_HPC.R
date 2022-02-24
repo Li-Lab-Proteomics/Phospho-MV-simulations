@@ -16,6 +16,11 @@ library(pcaMethods)
 # modified SDA
 if(!require('trust')) install.packages('trust', repos="https://cloud.r-project.org/")
 library(trust)
+# MSstatsPTM
+if(!require('reshape2')) install.packages('reshape2', repos="https://cloud.r-project.org/")
+library(reshape2)
+if(!require('survival')) install.packages('survival', repos="https://cloud.r-project.org/")
+library(survival)
 
 setwd('../Phospho-MV-simulations-main')
 cd=getwd()
@@ -304,6 +309,77 @@ ziWaldTest=function(x,y,nit=25,method='zig'){
     }
   }
   return(list(statistic=as.numeric(W1), pvalue=as.numeric(pv)))
+}
+## MSstatsPTM. Refer to: Kohler, D.;  Tsai, T.-H.;  Huang, T.;  Staniak, M.;  Choi, M.; Vitek, O. MSstatsPTM: Statistical Characterization of Post-translational Modifications. 2021. R package version 1.2.4.
+msstats=function(input, impute=FALSE){
+  n_features=nrow(input)
+  p=c()
+  if (impute==TRUE){
+    input=AFT_impute_summarize(input)
+    for (i in seq_len(n_features)){
+      input_feature=input[input$FEATURE==i,]
+      full_fit = lm(newABUNDANCE ~ GROUP, data = input_feature)
+      p[i]=summary(full_fit)$coefficients[2,4]
+    }
+  }else{
+    input=MSstats_input(input)
+    for (i in seq_len(n_features)){
+      input_feature=input[input$FEATURE==i,]
+      full_fit = lm(value ~ GROUP, data = input_feature)
+      #df_full = full_fit[["df.residual"]]
+      p[i]=summary(full_fit)$coefficients[2,4]
+    }
+  }
+  return(p)
+}
+MSstats_input=function(raw,logTrans=2){
+  if (logTrans==2){
+    raw=log2(raw)
+  }
+  tmp=melt(raw,varnames=c('FEATURE','RUN'))
+  tmp$RUN=factor(tmp$RUN)
+  tmp$FEATURE=factor(tmp$FEATURE)
+  tmp['cen']=ifelse(is.na(tmp$value),0,1)
+  tmp['GROUP']=factor(rep(c('Ctrl','Tumor'),each=nrow(tmp)/2))
+  return(tmp)
+}
+AFT_impute=function(dataset){
+  input=MSstats_input(dataset)
+  missingness_filter = is.finite(input$value)
+  n_total = nrow(input[missingness_filter, ])
+  n_features = data.table::uniqueN(input[missingness_filter, 'FEATURE'])
+  n_runs = data.table::uniqueN(input[missingness_filter, 'RUN'])
+  countdf = n_total  < n_features + n_runs - 1
+  #set.seed(100)
+  if (n_features == 1L) {
+    fit = survreg(Surv(value, cen, type = "left") ~ RUN,
+                  data = input, dist = "gaussian")    
+  } else {
+    if (countdf) {
+      fit = survreg(Surv(value, cen, type = "left") ~ RUN,
+                    data = input, dist = "gaussian")
+    } else {
+      fit = survreg(Surv(value, cen, type = "left") ~ FEATURE + RUN,
+                    data = input, dist = "gaussian")
+    }
+  }
+  input['predicted']=predict(fit, newdata = input)
+  input['predicted']=ifelse(input$cen==0, input$predicted, NA)
+  input['newABUNDANCE']=ifelse(input$cen==0, input$predicted, input$value)
+  return(input)
+}
+AFT_impute_summarize=function(data,num_fea=1){
+  n_features=nrow(data)
+  #n_split=n_features%/%num_pro
+  input=NULL
+  if (num_fea==1){
+    for (i in seq_len(n_features)){
+      dataset=t(data.frame(data[i,]))
+      rownames(dataset)=c(i)
+      input=rbind(input,AFT_impute(dataset))
+    }
+  }
+  return(input)
 }
 
 ######  random seeds  ######
@@ -671,10 +747,19 @@ for (round in 1:nround){
             } else pvalue.zilnDM[i] <- ziln_test
           }
           pvalue.zilnDM.fdr <- p.adjust(pvalue.zilnDM, method = "BH")
+		
+          # MSstatsPTM
+          cat("----------MSstatsPTM----------\n")
+          pvalue.msstats=msstats(data.na,impute=F)
+          pvalue.msstats.BH=p.adjust(pvalue.msstats,method='BH')
           
+          cat("----------MSstatsPTM_AFT----------\n")
+          pvalue.msstats.AFT=msstats(data.na,impute=T)
+          pvalue.msstats.AFT.BH=p.adjust(pvalue.msstats.AFT,method='BH')
           
-          output.data <- data.frame(pvalue.log.t.unpair.BH, pvalue.t.sampmin.BH, pvalue.t.bPCA.BH, pvalue.wilcox.unpair.BH, pvalue.wilcox.sampmin.BH, pvalue.wilcox.bPCA.BH, pvalue.modT, pvalue.modT.sampmin, pvalue.modT.bPCA, pvalue.2t.BH, pvalue.2wilcox.BH, pvalue.sda.BH, pvalue.mysda.BH, pvalue.zig.fdr, pvalue.ziln.fdr, pvalue.zigDM.fdr, pvalue.zilnDM.fdr, truth.na)
-          colnames(output.data) <- c("T-test", 'T-SampMin', 'T-bPCA', "Wilcoxon", 'Wilcoxon-SampMin', 'Wilcoxon-bPCA', "ModT", 'ModT-SampMin', 'ModT-bPCA', 'twoT', 'twoWilcox', 'SDA_robust', 'SDA', 'ZIG_2p', 'ZILN_2p', 'ZIG_DM', 'ZILN_DM', "TrueDE")
+		
+          output.data <- data.frame(pvalue.log.t.unpair.BH, pvalue.t.sampmin.BH, pvalue.t.bPCA.BH, pvalue.wilcox.unpair.BH, pvalue.wilcox.sampmin.BH, pvalue.wilcox.bPCA.BH, pvalue.modT, pvalue.modT.sampmin, pvalue.modT.bPCA, pvalue.2t.BH, pvalue.2wilcox.BH, pvalue.sda.BH, pvalue.mysda.BH, pvalue.zig.fdr, pvalue.ziln.fdr, pvalue.zigDM.fdr, pvalue.zilnDM.fdr, pvalue.msstats.BH, pvalue.msstats.AFT.BH, truth.na)
+          colnames(output.data) <- c("T-test", 'T-SampMin', 'T-bPCA', "Wilcoxon", 'Wilcoxon-SampMin', 'Wilcoxon-bPCA', "ModT", 'ModT-SampMin', 'ModT-bPCA', 'twoT', 'twoWilcox', 'SDA_robust', 'SDA', 'ZIG_2p', 'ZILN_2p', 'ZIG_DM', 'ZILN_DM', "MSstatsPTM", 'MSstatsPTM-AFT', "TrueDE")
           write.table(output.data, paste(cd, "/simu_results/round", round, "/Simu_", nsample, "_", fc, "_", zr, "_", mnar, "_for_", round, "_times.txt", sep=""), quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE, append=FALSE)
         }
       }
