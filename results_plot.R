@@ -255,7 +255,7 @@ for (n in c(5,10,30,50,80,100)){
 }
 
 ####### quantify the decrease in pAUC by AFT ######
-aft=result.mean.all3[(result.mean.all3$model %in% c('MSstatsPTM','MSstatsPTM-AFT'))&(result.mean.all3$MNAR<1),]
+aft=result.mean.all2[(result.mean.all2$model %in% c('MSstatsPTM','MSstatsPTM-AFT'))&(result.mean.all2$MNAR<1),]
 # if consider mnar==1, sometimes AFT improve by 70%
 aft2=c()
 for (n in c(5,10,30,50,80,100)){
